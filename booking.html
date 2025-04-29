@@ -6,14 +6,10 @@
   <title>Book Now</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="bookingstyle.css" />
-
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
-
-  <!-- Header -->
   <header class="header">
     <div class="container">
       <h1 class="header-title">Grand Convention Centre</h1>
@@ -30,7 +26,6 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
   <section class="hero">
     <div class="container">
       <h2 class="hero-title">Book Your Spot Now</h2>
@@ -38,7 +33,6 @@
     </div>
   </section>
 
-  <!-- Event Details -->
   <section class="event-details">
     <div class="container">
       <div class="event-info">
@@ -47,12 +41,9 @@
         <p>Time: 5:00 PM</p>
         <p>Location: 3-65 Grand Convention Centre, Jublie hills, Hyderabad</p>
         <p id="countdown" style="font-weight: bold; color: #007bff; margin-top: 10px;"></p>
-
         <p id="seatsLeft" style="font-weight: bold; color: rgb(18, 20, 18);">Available Seats: Loading...</p>
-
       </div>
 
-      <!-- Booking Form -->
       <div class="booking-form">
         <h3>Book Your Ticket</h3>
         <form id="bookingForm">
@@ -60,40 +51,31 @@
             <label for="name">Name</label>
             <input type="text" id="name" required />
           </div>
-
           <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" required />
           </div>
-
           <div class="form-group">
             <label for="phone">Phone</label>
             <input type="tel" id="phone" required />
           </div>
-
           <div class="form-group">
             <label for="tickets">Number of Tickets</label>
             <input type="number" id="tickets" min="1" max="10" value="1" required />
           </div>
-
           <div class="form-group">
             <label for="amount">Total Amount (₹)</label>
             <input type="text" id="amount" readonly />
           </div>
-
-          <!-- QR Code Section -->
           <div class="form-group" id="qrSection" style="display: none;">
             <label>Scan & Pay</label>
             <img src="images\QRCode.jpg" alt="QR Code" width="200" />
             <p style="font-size: 0.9rem;">Scan this QR code to pay using any UPI app.</p>
           </div>
-
-          <!-- Transaction ID -->
           <div class="form-group" id="txnSection" style="display: none;">
             <label for="transactionId">Transaction ID</label>
             <input type="text" id="transactionId" placeholder="Enter your UPI Transaction ID" required />
           </div>
-
           <button type="submit" class="btn">Register</button>
         </form>
         <p id="successMsg" style="color: rgb(32, 209, 32); display: none;">Booking successful!</p>
@@ -101,140 +83,182 @@
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
     <p>&copy; 2025 Grand Convention Centre. All Rights Reserved.</p>
   </footer>
 
-  <!-- Countdown Timer -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const countdownEl = document.getElementById("countdown");
-      const form = document.getElementById("bookingForm");
-      const submitBtn = form.querySelector("button[type='submit']");
-      const inputs = form.querySelectorAll("input");
-      const eventDate = new Date("2025-04-29T11:15:00");
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    getDoc,
+    doc,
+    updateDoc,
+    increment
+  } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-      function updateCountdown() {
-        const now = new Date();
-        const timeLeft = eventDate - now;
+  const firebaseConfig = {
+    apiKey: "AIzaSyBGQDSO8P7GNLORGe7t7QiLCUWerhbagSY",
+    authDomain: "register-6fb24.firebaseapp.com",
+    projectId: "register-6fb24",
+    storageBucket: "register-6fb24.appspot.com",
+    messagingSenderId: "703309678354",
+    appId: "1:703309678354:web:73b29bf17301173d5ad5cb",
+    measurementId: "G-R8HS75DWPY"
+  };
 
-        if (timeLeft <= 0) {
-          countdownEl.textContent = "⚠️ This event is closed. Booking is no longer available.";
-          countdownEl.style.color = "red";
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const TOTAL_SEATS = 1000;
 
-          inputs.forEach(input => input.disabled = true);
-          submitBtn.disabled = true;
-          submitBtn.style.opacity = 0.6;
-          submitBtn.style.cursor = "not-allowed";
-          return;
-        }
+  document.addEventListener("DOMContentLoaded", async () => {
+    const countdownEl = document.getElementById("countdown");
+    const form = document.getElementById("bookingForm");
+    const submitBtn = form.querySelector("button[type='submit']");
+    const inputs = form.querySelectorAll("input");
+    const ticketsInput = document.getElementById("tickets");
+    const amountInput = document.getElementById("amount");
+    const qrSection = document.getElementById("qrSection");
+    const txnSection = document.getElementById("txnSection");
+    const transactionIdInput = document.getElementById("transactionId");
+    const successMsg = document.getElementById("successMsg");
+    const seatsLeftEl = document.getElementById("seatsLeft");
 
-        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
-        const seconds = Math.floor((timeLeft / 1000) % 60);
+    const PRICE_PER_TICKET = 100;
+    const eventDate = new Date("2025-04-29T22:15:00");
 
-        countdownEl.textContent = `⏳ Time Left: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    function updateCountdown() {
+      const now = new Date();
+      const timeLeft = eventDate - now;
+      if (timeLeft <= 0) {
+        countdownEl.textContent = "⚠️ This event is closed. Booking is no longer available.";
+        countdownEl.style.color = "red";
+        inputs.forEach(input => input.disabled = true);
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = 0.6;
+        submitBtn.style.cursor = "not-allowed";
+        return;
       }
+      const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+      const seconds = Math.floor((timeLeft / 1000) % 60);
+      countdownEl.textContent = `⏳ Time Left: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }
 
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
-    });
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
 
-
-   
-
-  </script>
-
-  <!-- Amount Calculator and Display Logic -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const ticketsInput = document.getElementById("tickets");
-      const amountInput = document.getElementById("amount");
-      const qrSection = document.getElementById("qrSection");
-      const txnSection = document.getElementById("txnSection");
-      const transactionIdInput = document.getElementById("transactionId");
-      const form = document.getElementById("bookingForm");
-
-      const PRICE_PER_TICKET = 100;
-
-      ticketsInput.addEventListener("input", () => {
-        const tickets = parseInt(ticketsInput.value);
-        if (tickets > 0) {
-          const total = tickets * PRICE_PER_TICKET;
-          amountInput.value = total;
-          qrSection.style.display = "block";
-          txnSection.style.display = "block";
-        } else {
-          amountInput.value = "";
-          qrSection.style.display = "none";
-          txnSection.style.display = "none";
-        }
-      });
-
-      form.addEventListener("submit", function (e) {
-        if (txnSection.style.display !== "none" && transactionIdInput.value.trim() === "") {
-          e.preventDefault();
-          alert("Please enter the Transaction ID after completing the payment.");
-        }
-      });
-    });
-  </script>
-
-  <!-- Firebase Form Submission -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
-  
-    const firebaseConfig = {
-      apiKey: "AIzaSyBi9elEQF5Tpu5lVlrsrry1MRxcgMmGY_Y",
-      authDomain: "eventbooking-f7516.firebaseapp.com",
-      projectId: "eventbooking-f7516",
-      storageBucket: "eventbooking-f7516.appspot.com",
-      messagingSenderId: "259996638686",
-      appId: "1:259996638686:web:0b59e058010836dd59914f",
-      measurementId: "G-B9SPZPQDGE"
-    };
-  
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-  
-    const TOTAL_SEATS = 1000;
-    const seatsLeftElement = document.getElementById("seatsLeft");
-  
-    async function updateSeatAvailability() {
+    async function addBooking(name, email, phone, tickets, amount, transactionId) {
       try {
-        console.log("Fetching bookings from Firestore...");
-        const querySnapshot = await getDocs(collection(db, "bookings"));
-        let totalBooked = 0;
-  
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          console.log("Booking:", data);
-          totalBooked += data.tickets || 0;
+        await addDoc(collection(db, "bookings"), {
+          name,
+          email,
+          phone,
+          tickets,
+          amount,
+          transactionId,
+          timestamp: new Date()
         });
-  
-        const availableSeats = TOTAL_SEATS - totalBooked;
-  
-        if (availableSeats <= 0) {
-          seatsLeftElement.textContent = "❌ All seats are booked!";
-          seatsLeftElement.style.color = "red";
-        } else {
-          seatsLeftElement.textContent = `✅  Available Seats: ${availableSeats}`;
-          seatsLeftElement.style.color = "black";
-        }
-  
-      } catch (error) {
-        seatsLeftElement.textContent = "Error loading seat data.";
-        seatsLeftElement.style.color = "red";
-        console.error("Error fetching data from Firestore:", error);
+      } catch (err) {
+        console.error("Booking failed:", err);
+        throw err;
       }
     }
-  
-    updateSeatAvailability();
-  </script>
-  
 
+    async function sendConfirmationEmail(name, email, tickets, amount, transactionId) {
+      console.log("Simulated email:", { name, email, tickets, amount, transactionId });
+    }
+
+    async function checkAvailableSeats() {
+      try {
+        const docRef = doc(db, "seats", "availability");
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          return TOTAL_SEATS - (data.bookedSeats || 0);
+        } else {
+          return TOTAL_SEATS;
+        }
+      } catch (err) {
+        console.error("Error fetching seat data:", err);
+        return TOTAL_SEATS;
+      }
+    }
+
+    async function updateSeatAvailability(ticketsBooked) {
+      try {
+        const docRef = doc(db, "seats", "availability");
+        await updateDoc(docRef, {
+          bookedSeats: increment(ticketsBooked)
+        });
+      } catch (err) {
+        console.error("Error updating seat count:", err);
+        throw err;
+      }
+    }
+
+    async function updateSeatsLeft() {
+      const available = await checkAvailableSeats();
+      seatsLeftEl.textContent = `Available Seats: ${available}`;
+    }
+
+    await updateSeatsLeft();
+    function handleTicketInput() {
+      const tickets = parseInt(ticketsInput.value) || 0;
+      if (tickets > 0) {
+        amountInput.value = tickets * PRICE_PER_TICKET;
+        qrSection.style.display = "block";
+        txnSection.style.display = "block";
+      } else {
+        amountInput.value = "";
+        qrSection.style.display = "none";
+        txnSection.style.display = "none";
+      }
+    }
+    
+    ticketsInput.addEventListener("input", handleTicketInput);
+    handleTicketInput(); // Trigger on initial load to show amount if value > 0
+   
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const tickets = parseInt(ticketsInput.value);
+      const amount = amountInput.value;
+      const transactionId = transactionIdInput.value.trim();
+
+      if (txnSection.style.display !== "none" && transactionId === "") {
+        alert("Please enter the Transaction ID.");
+        return;
+      }
+
+      const availableSeats = await checkAvailableSeats();
+      if (availableSeats < tickets) {
+        alert("Not enough seats available.");
+        return;
+      }
+
+      try {
+        await addBooking(name, email, phone, tickets, amount, transactionId);
+        await updateSeatAvailability(tickets);
+        await sendConfirmationEmail(name, email, tickets, amount, transactionId);
+        successMsg.style.display = "block";
+        await updateSeatsLeft();
+        form.reset();
+        qrSection.style.display = "none";
+        txnSection.style.display = "none";
+        amountInput.value = "";
+      } catch (error) {
+        alert("Error booking tickets: " + error.message);
+      }
+    });
+  });
+</script>
 </body>
 </html>
