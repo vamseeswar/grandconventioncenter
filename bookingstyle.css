@@ -1,0 +1,397 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body with Multi-layered Animated Background */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(-45deg, 
+      #ff9a9e, #fad0c4, #fbc2eb, #a18cd1, 
+      #84fab0, #8fd3f4, #cfd9df, #a6c0fe,
+      #ff9a9e, #fad0c4, #fbc2eb, #a18cd1
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 25s ease infinite;
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Background Animation Layers */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.3;
+  background:
+      radial-gradient(circle at 20% 30%, #ff9a9e, transparent 40%),
+      radial-gradient(circle at 80% 70%, #fad0c4, transparent 40%),
+      radial-gradient(circle at 40% 60%, #a1c4fd, transparent 40%);
+  animation: floatWaves 30s ease-in-out infinite alternate;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes floatWaves {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  100% { transform: translate(-5%, -5%) rotate(2deg); }
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero Section with Glassmorphism Effect */
+.hero {
+  background: blue;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 4rem 2rem;
+  text-align: center;
+  border-radius: 1rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 1s ease-out;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+      to bottom right,
+      rgba(255,255,255,0.1) 0%,
+      rgba(255,255,255,0) 50%,
+      rgba(255,255,255,0.1) 100%
+  );
+  transform: rotate(30deg);
+  animation: shine 8s infinite;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(30deg); }
+  100% { transform: translateX(100%) rotate(30deg); }
+}
+
+.hero h2 {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  margin-bottom: 1rem;
+  font-weight: 700;
+  position: relative;
+  animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+  0% { text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+  100% { text-shadow: 0 0 20px rgba(255,255,255,0.8); }
+}
+
+/* Enhanced Event Details Section */
+.event-details {
+  background: linear-gradient(135deg, rgba(30, 60, 114, 0.9), rgba(42, 82, 152, 0.9));
+  color: #fff;
+  padding: 4rem 2rem;
+  border-radius: 1rem;
+  margin: 3rem 0;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 1s ease-out;
+}
+
+.event-details::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+      #ff9a9e, #fad0c4, #a1c4fd, #fbc2eb, 
+      #8fd3f4, #c2e9fb, #e0c3fc, #f9f586
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+.event-info {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 3rem;
+  border-radius: 1rem;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.event-info:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+#seatsleft{
+  text-decoration-color: #333;
+}
+.event-info h3 {
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+  color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  animation: fadeInLeft 1s ease-out, pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+  0% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+  50% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+  100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+}
+
+.event-info p {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  line-height: 1.8;
+  opacity: 0;
+  animation: fadeInText 0.8s ease forwards;
+}
+
+.event-info p:nth-child(2) { animation-delay: 0.3s; }
+.event-info p:nth-child(3) { animation-delay: 0.6s; }
+.event-info p:nth-child(4) { animation-delay: 0.9s; }
+.event-info p:nth-child(5) { animation-delay: 1.2s; }
+
+@keyframes fadeInText {
+  to { opacity: 0.9; }
+}
+/* Style for the booking form */
+.booking-form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.booking-form h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-size: 1rem;
+  color: #555;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.form-group select {
+  background-color: #f7f7f7;
+}
+
+/* Button Style */
+button.btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+button.btn:hover {
+  background-color: #0056b3;
+}
+
+/* Payment Section Styling */
+#paymentMethod {
+  background-color: #f7f7f7;
+}
+
+#cardInputGroup {
+  display: none;
+}
+
+#cardInputGroup input {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  width: 100%;
+  background-color: #fff;
+}
+
+#successMsg {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  color: green;
+}
+
+#cardInputGroup input:focus,
+#paymentMethod:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Footer with Animated Gradient Border */
+footer {
+  background: rgba(15, 32, 39, 0.9);
+  color: #fff;
+  padding: 3rem 2rem;
+  text-align: center;
+  margin-top: 4rem;
+  position: relative;
+}
+
+footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+      #ff9a9e, #fad0c4, #a1c4fd, #fbc2eb, 
+      #8fd3f4, #c2e9fb, #e0c3fc, #f9f586
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+
+/* Footer Section */
+footer {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px 0;
+  text-align: center;
+  color: #fff;
+  margin-top: 60px;
+}
+
+footer p {
+  font-size: 14px;
+}
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .container {
+      padding: 1.5rem;
+  }
+  
+  .event-info,
+  .booking-form {
+      padding: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero,
+  .event-details {
+      padding: 3rem 1.5rem;
+  }
+  
+  .event-info h3 {
+      font-size: 1.8rem;
+  }
+  
+  .event-info p {
+      font-size: 1rem;
+  }
+  
+  .booking-form h3 {
+      font-size: 1.8rem;
+  }
+  
+  footer {
+      padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+      padding: 1rem;
+  }
+  
+  .hero {
+      padding: 2rem 1rem;
+  }
+  
+  .event-info,
+  .booking-form {
+      padding: 1.5rem;
+  }
+  
+  .event-info h3 {
+      font-size: 1.5rem;
+  }
+  
+  .footer-links {
+      flex-direction: column;
+      gap: 1rem;
+  }
+}
+
+#countdown {
+  font-size: 18px;
+  padding: 8px;
+  border-radius: 6px;
+  background-color: #eef6ff;
+  display: inline-block;
+}

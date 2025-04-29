@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="gallerystyle.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>Grand Convention Centre</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="booking.html">Book Now</a></li>
+                    <li><a href="gallery.html" class="active">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Gallery</h2>
+            <p>Check out photos from our past events</p>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery">
+        <div class="container">
+            <div class="gallery">
+                <img src="images\image1.jpeg" alt="image not found">
+                <img src="images\image3.jpeg" alt="image not found">
+                <img src="images\image2.jpeg" alt="image not found">
+                <img src="images\image4.jpeg" alt="image not found">
+                <img src="images\image6.jpeg" alt="image not found">
+                <img src="images\image7.jpeg" alt="image not found">
+                <img src="images\image8.jpeg" alt="image not found">
+                <img src="images\image1.jpeg" alt="image not found">
+                <img src="images\image2.jpeg" alt="image not found">
+                <img src="images\image4.jpeg" alt="image not found">
+                <img src="images\image6.jpeg" alt="image not found">
+                <img src="images\image8.jpeg" alt="image not found">
+                <img src="images\image2.jpeg" alt="image not found">
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Grand Convention Centre. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+    let images = document.querySelectorAll('.gallery img');
+    let popup = document.querySelector('.popup');
+    let popupimg = document.querySelector('.popup img');
+    for(var img of images){
+        img.onclick=function(){
+            popup.style.display="block";
+            popupimg.src = this.getAttribute('src');
+        }
+    }
+    document.querySelector('.popup span').onclick=function(){
+        popup.style.display="none";
+    }
+</script>
+</body>
+</html>

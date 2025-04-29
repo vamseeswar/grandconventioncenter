@@ -1,0 +1,351 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* General Body Styling */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(-45deg, 
+    #ff9a9e, #fad0c4, #fbc2eb, #a18cd1, 
+    #84fab0, #8fd3f4, #cfd9df, #a6c0fe,
+    #ff9a9e, #fad0c4, #fbc2eb, #a18cd1
+  );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 400% 400%;
+  animation: gradientShift 25s ease infinite, auroraBackground 15s ease infinite, colorWaves 20s ease-in-out infinite;
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* Animating Background Color */
+@keyframes auroraBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Hero Section */
+.about-hero {
+  background: linear-gradient(45deg, #ff6a00, #ee0979, #00b4d8, #ffbc00);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite, fadeIn 1s ease-out;
+  color: #fff;
+  text-align: center;
+  padding: 80px 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0);
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.about-hero h2 {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px;
+  background: linear-gradient(45deg, #ff6a00, #00b4d8, #ffbc00, #ee0979);
+  background-size: 400% 400%;
+  animation: discoLight 9s ease infinite, fadeInUp 1s ease-out;
+  color: #333;
+  max-width: 1400px;
+  margin: 20px auto;
+  border-radius: 5px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+
+  /* Key additions for text containment */
+  overflow: hidden;           /* Ensures no content overflows the box */
+  word-wrap: break-word;      /* Breaks long words properly */
+  white-space: normal;        /* Prevents text from staying in one line */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.about-hero p {
+  font-size: 1.2rem;
+  margin-top: 0 px;
+  opacity: 0.5;
+  font-weight: 500;
+}
+
+/* About Content Section */
+
+@keyframes discoLight {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 0% 50%;
+  }
+  75% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.about-content h3 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #ff6a00;
+  animation: fadeInLeft 1s ease-out;
+}
+
+.about-content p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  line-height: 1.8;
+  animation: fadeInUp 1.5s ease-out;
+}
+
+.about-content ul {
+  list-style-type: none;
+  padding-left: 0;
+  animation: fadeInUp 2s ease-out;
+}
+
+.about-content ul li {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  position: relative;
+}
+
+.about-content ul li::before {
+  content: '\f00c';
+  font-family: 'FontAwesome';
+  color: #ff6a00;
+  position: absolute;
+  left: -30px;
+  top: 5px;
+  font-size: 1.5rem;
+}
+
+/* Text Animation for Heading */
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Text Animation for Paragraphs and List */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Stats Section */
+.about-stats {
+  background: linear-gradient(45deg, #ff6a00, #00b4d8, #ffbc00, #ee0979);
+  background-size: 400% 400%;
+  animation: discoLight 12s ease infinite;
+  padding: 50px 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* Added box-shadow */
+  border-radius: 10px; /* Added border-radius for smooth corners */
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  text-align: center;
+}
+
+.stat-box {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 1s ease-out; /* Added fadeInUp animation */
+}
+
+.stat-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+.stat-box h4 {
+  font-size: 3rem;
+  color: #ff6a00;
+  margin-bottom: 10px;
+  animation: fadeInLeft 1s ease-out; /* Added fadeInLeft animation */
+}
+
+.stat-box p {
+  font-size: 1.2rem;
+  color: #777;
+  animation: fadeInUp 1.5s ease-out; /* Added fadeInUp animation */
+}
+
+/* Footer Styling */
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 1rem;
+}
+
+footer p {
+  font-size: 1.2rem;
+}
+
+footer a {
+  color: #ff6a00;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #fff;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design with Bootstrap Grid */
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+@media (max-width: 768px) {
+  .about-hero h2 {
+    font-size: 2.5rem;
+  }
+
+  .about-hero p {
+    font-size: 1rem;
+  }
+
+  .about-content h3 {
+    font-size: 2rem;
+  }
+
+  .about-content p {
+    font-size: 1rem;
+  }
+
+  .stat-box {
+    padding: 20px;
+  }
+
+  .stat-box h4 {
+    font-size: 2rem;
+  }
+
+  .stat-box p {
+    font-size: 1rem;
+  }
+
+  footer {
+    padding: 20px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero h2 {
+    font-size: 2rem;
+  }
+
+  .about-hero p {
+    font-size: 0.9rem;
+  }
+
+  .about-content h3 {
+    font-size: 1.8rem;
+  }
+
+  .about-content p {
+    font-size: 0.9rem;
+  }
+
+  .stat-box h4 {
+    font-size: 1.8rem;
+  }
+
+  .stat-box p {
+    font-size: 1rem;
+  }
+}

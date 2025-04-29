@@ -1,0 +1,29 @@
+<!-- validate.html -->
+<input type="text" id="searchInput" placeholder="Enter Email or Phone" />
+<button onclick="validateTicket()">Validate</button>
+<p id="resultMsg"></p>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+  const firebaseConfig = { /* your config */ };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function validateTicket() {
+    const input = document.getElementById('searchInput').value;
+    const bookingsRef = collection(db, 'bookings');
+    const q = query(bookingsRef, where('email', '==', input));
+    const querySnapshot = await getDocs(q);
+
+    const resultMsg = document.getElementById('resultMsg');
+    if (!querySnapshot.empty) {
+      resultMsg.textContent = "✅ Ticket is valid!";
+      resultMsg.style.color = "green";
+    } else {
+      resultMsg.textContent = "❌ Ticket not found!";
+      resultMsg.style.color = "red";
+    }
+  }
+</script>

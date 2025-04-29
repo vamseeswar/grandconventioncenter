@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Convention Centre - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="indexstyle.css">
+    
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Grand Convention Centre</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="booking.html">Book Now</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h2>Celebrate Life’s Moments with Us</h2>
+                <p>Spacious halls, premium amenities, and an unforgettable experience await you at Grand Convention Centre.</p>
+                <a href="booking.html" class="btn">Check Availability</a>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features container">
+            <div class="feature-box">
+                <h3>Premium Facilities</h3>
+                <p>Modern A/V systems, central AC, lush gardens, and catering services.</p>
+            </div>
+            <div class="feature-box">
+                <h3>Multiple Event Spaces</h3>
+                <p>From small meetings to grand weddings, we have space for every event.</p>
+            </div>
+            <div class="feature-box">
+                <h3>Trusted by Thousands</h3>
+                <p>Over 5,000 successful events hosted with glowing feedback.</p>
+            </div>
+        </section>
+
+        <!-- Additional Information Section -->
+        <section class="additional-info">
+            <div class="container">
+                <h2>Why Choose Us?</h2>
+                <p>At Grand Convention Centre, we take pride in offering a venue that combines elegance, convenience, and top-tier service. Our event spaces are equipped with cutting-edge technology, and our team ensures a seamless experience for your special occasions. Whether you're hosting a corporate conference, a wedding, or a celebration, we promise a memorable event.</p>
+            </div>
+        </section>
+
+        <!-- Testimonial Section -->
+        <section class="testimonial">
+            <div class="container">
+                <h2>What Our Clients Say</h2>
+                <blockquote id="testimonial-text">"A truly grand experience! The decor and service were top-notch." – Priya R.</blockquote>
+            </div>
+        </section>
+
+        <!-- Countdown Section -->
+        <section class="countdown">
+            <div class="container">
+                <h2>Next Big Event Starts In:</h2>
+                <div id="timer">3 Days 12 Hours 45 Minutes</div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <h3 class="serve">Our Services</h3>
+        </section>
+        <section class="services">
+            <div class="container">
+                
+            
+                <div class="service-box">
+                    <h3>Event Planning</h3>
+                    <p>From concept to execution, our expert planners are here to assist every step of the way.</p>
+                </div>
+                <div class="service-box">
+                    <h3>Catering</h3>
+                    <p>We offer a variety of catering packages to suit every taste, from gourmet meals to buffet options.</p>
+                </div>
+                <div class="service-box">
+                    <h3>Technical Support</h3>
+                    <p>State-of-the-art A/V equipment and technical support for flawless presentations and performances.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="cta">
+            <div class="container">
+                <h2>Ready to Make Your Event Unforgettable?</h2>
+                <p>Contact us today to reserve your space or get more details about our services.</p>
+                <a href="contact.html" class="btn">Contact Us</a>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // === Countdown Timer ===
+        const eventDate = new Date("2025-05-10T18:00:00"); // May 10, 2025 at 6:00 PM
+        const timerElement = document.getElementById("timer");
+
+        function updateCountdown() {
+            const now = new Date();
+            const timeLeft = eventDate - now;
+
+            if (timeLeft <= 0) {
+                timerElement.innerHTML = "The event has started!";
+                return;
+            }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+            const seconds = Math.floor((timeLeft / 1000) % 60);
+
+            timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // initial call
+
+        // === Testimonial Rotator ===
+        const testimonials = [
+            `"A truly grand experience! The decor and service were top-notch." – Priya R.`,
+            `"Spacious halls and the hospitality team were amazing." – Karan S.`,
+            `"Perfect venue for our corporate meet. Highly recommend!" – Meera L.`,
+            `"Great ambiance and professional staff. Will book again!" – Anil D.`
+        ];
+
+        let testimonialIndex = 0;
+        const testimonialElement = document.getElementById("testimonial-text");
+
+        function rotateTestimonial() {
+            testimonialElement.textContent = testimonials[testimonialIndex];
+            testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+        }
+
+        // Rotate testimonial every 6 seconds
+        setInterval(rotateTestimonial, 6000);
+        rotateTestimonial(); // initial call
+    </script>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Grand Convention Centre. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

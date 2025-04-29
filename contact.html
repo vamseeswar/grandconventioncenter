@@ -1,0 +1,132 @@
+<!-- Save as contact.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us - Grand Convention Centre</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="contactstyle.css"/> 
+
+   <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Grand Convention Centre</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="booking.html">Book Now</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="contact-hero">
+      <div class="container">
+        <h2>Contact Us</h2>
+        <p>We'd love to hear from you! Whether you have a question, feedback, or need assistance, feel free to reach out.</p>
+      </div>
+    </section>
+
+    <section class="contact-info container">
+      <h3>Our Contact Information</h3>
+      <div class="contact-details">
+        <div><h4>Phone</h4><p>+91 93923 78054</p></div>
+        <div><h4>Alternate Phone</h4><p>+91 93470 61282</p></div>
+        <div><h4>Email</h4><p>info@gndcvncentre.com</p></div>
+        <div><h4>Support Email</h4><p>support@gndcvncentre.com</p></div>
+        <div><h4>Address</h4><p>3-65 Grand Convention Road, Jublie hills , Hyderabad</p></div>
+        <div><h4>Working Hours</h4><p>Mon - Sat: 9:00 AM - 11:00 PM</p></div>
+      
+    </section>
+
+    <section class="contact-form container">
+      <h3>Send Us a Message</h3>
+      <form id="contactForm" method="post">
+        <label for="name">Your Name</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" pattern="[0-9]{10}" required>
+        
+
+        <label for="message">Your Message</label>
+        <textarea id="message" name="message" rows="6" required></textarea>
+
+        <button type="submit" class="btn">Send Message</button>
+        <p id="contactSuccess" style="display: none; color: green;">Message sent successfully!</p>
+
+      </form>
+    </section>
+
+   
+
+  <footer>
+    <div class="container">
+      <p>&copy; @ 2025 Grand Convention Centre. All Rights Reserved.</p>
+    </div>
+  </footer>
+  </main>
+
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+  
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD6RV_8iKerzxYAlO3XprHuikpgZVpDp3E",
+      authDomain: "contactdetails-d57f7.firebaseapp.com",
+      projectId: "contactdetails-d57f7",
+      storageBucket: "contactdetails-d57f7.appspot.com",
+      databaseURL: "https://contactdetails-d57f7-default-rtdb.firebaseio.com",
+      messagingSenderId: "587967956026",
+      appId: "1:587967956026:web:900feaee58c87a7e82a103",
+      measurementId: "G-B36V0QBKJ6"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+  
+    const contactForm = document.getElementById('contactForm');
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const message = document.getElementById('message').value;
+  
+      try {
+        await addDoc(collection(db, "contacts"), {
+          name,
+          email,
+          phone,
+          message,
+          timestamp: serverTimestamp()
+        });
+  
+        contactForm.reset();
+        document.getElementById('contactSuccess').style.display = 'block';
+        alert("Message sent successfully!");
+      } catch (error) {
+        console.error("Error sending message: ", error);
+        alert("Error: " + error.message);
+      }
+    });
+  </script>
+  
+</body>
+</html>
